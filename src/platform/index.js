@@ -5,7 +5,9 @@
  * @Last Modified time: 2018-01-06 16:10:08
  */
 import Matter from '../lib/matter-dev';
+import { Consfixded} from '../constraint'
 const { Bodies } = Matter;
+
 export default class Platform {
   constructor(options) {
     const defaultOptions = {
@@ -18,6 +20,19 @@ export default class Platform {
     Object.assign(this.options, defaultOption, options);
     // 平台的刚体，约束等
     this.bodies = [];
+  }
+
+  init() {
+    this.create();
+    // 添加约束
+    const { x, y, width } = this.options;
+    const body = this.bodies[0];
+    const consFixed = new constraint({
+      pointA: { x, y}, 
+      pointA: { x: x + width, y},
+      bodyB: body
+    });
+    this.addEntity(consFixed)
   }
   /**
    * create
